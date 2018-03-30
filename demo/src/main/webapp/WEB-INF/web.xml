@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5" metadata-complete="true">
+	<display-name>SSM</display-name>
+
+	<!-- 配置文件加载 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml,
+			         classpath:applicationContext-mybatis.xml
+	    </param-value>
+	</context-param>
+	<!-- 配置文件加载 -->
+
+	<!-- 监听设置 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+	<!-- <filter>
+		<filter-name>statisticsFilter</filter-name>
+		<filter-class>com.sinosig.log.statistics.WebLevelFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>statisticsFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
+
+
+	<!-- 解决跨域问题 -->
+	<!-- <filter>
+		<filter-name>crossAjax</filter-name>
+		<filter-class>com.n22.server.common.filter.CrossAjaxFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>crossAjax</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> -->
+	<!-- 解决跨域问题 -->
+
+	<!-- 编码格式过滤器 -->
+	<filter>
+		<filter-name>springEncoding</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>springEncoding</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- 编码格式过滤器 -->
+
+	<!-- springmvc配置 -->
+	<servlet>
+		<servlet-name>springMvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:applicationContext-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<!-- <async-supported>true</async-supported> -->
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springMvc</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!-- springmvc配置 -->
+
+	<!-- druid权限配置 -->
+	<filter>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>DruidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- druid权限配置 -->
+
+	<!-- javamelody配置开始 -->
+	<!-- <listener> <listener-class>net.bull.javamelody.SessionListener</listener-class> 
+		</listener> <filter> <filter-name>monitoring</filter-name> <filter-class>net.bull.javamelody.MonitoringFilter</filter-class> 
+		<init-param> <param-name>system-actions-enabled</param-name> <param-value>true</param-value> 
+		</init-param> <init-param> <param-name>quartz-default-listener-disabled</param-name> 
+		<param-value>false</param-value> </init-param> <init-param> <param-name>displayed-counters</param-name> 
+		<param-value>http,spring,sql,jsp,log,error</param-value> </init-param> <init-param> 
+		<param-name>log</param-name> <param-value>true</param-value> </init-param> 
+		<init-param> <param-name>disabled</param-name> <param-value>false</param-value> 
+		</init-param> </filter> <filter-mapping> <filter-name>monitoring</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+	<!-- javamelody配置结束 -->
+
+
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+		<init-param>
+			<!-- 允许清空统计数据 -->
+			<param-name>resetEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- jsp页面设置 -->
+	<jsp-config>
+		<jsp-property-group>
+			<display-name>JSPConfiguration</display-name>
+			<url-pattern>*.jsp</url-pattern>
+			<el-ignored>false</el-ignored>
+			<page-encoding>utf-8</page-encoding>
+			<scripting-invalid>false</scripting-invalid>
+		</jsp-property-group>
+	</jsp-config>
+	<!-- jsp页面设置 -->
+
+	<!-- session配置 -->
+	<session-config>
+		<session-timeout>480</session-timeout>
+	</session-config>
+	<!-- session配置 -->
+
+	<!-- 错误页面设置 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/error/404</location>
+	</error-page>
+	<error-page>
+		<error-code>401</error-code>
+		<location>/error/401</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/500</location>
+	</error-page>
+
+	<welcome-file-list>
+		<welcome-file>/WEB-INF/page/default.jsp</welcome-file>
+	</welcome-file-list>
+	<!-- 错误页面设置 -->
+</web-app>
